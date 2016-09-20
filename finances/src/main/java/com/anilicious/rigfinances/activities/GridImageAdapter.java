@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,7 +40,7 @@ public class GridImageAdapter extends BaseAdapter {
 
             // set value into textview
             LinearLayout llGrid = (LinearLayout) gridView.findViewById(R.id.main_grid_element);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+            AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
             layoutParams.height = (int)(calculateScreenHeight() * 0.45);
             llGrid.setLayoutParams(layoutParams);
             TextView tvDescription = (TextView) gridView.findViewById(R.id.main_grid_text);

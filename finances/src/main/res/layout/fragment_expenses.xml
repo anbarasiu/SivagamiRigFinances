@@ -103,11 +103,11 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_vertical|center_horizontal"
+        android:baselineAligned="false">
 
         <Switch
             android:layout_width="wrap_content"

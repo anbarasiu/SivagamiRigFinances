@@ -19,6 +19,10 @@ public class PickerFragment extends DialogFragment implements DatePickerDialog.O
 
     private String pickerType;
 
+    public PickerFragment(){
+
+    }
+
     public PickerFragment(String pickerType){
         this.pickerType = pickerType;
     }
