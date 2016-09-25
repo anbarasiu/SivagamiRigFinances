@@ -14,13 +14,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addCookItem_parent">
 
-    <EditText
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView15" />
+
+    <Spinner
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addItem_item"
-        android:ems="10"
-        android:layout_weight="1"
-        android:hint="Item" />
+        android:id="@+id/spinner2"
+        android:layout_weight="1" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner3"
+        android:layout_weight="1" />
 
     <EditText
         android:layout_width="fill_parent"

@@ -6,28 +6,39 @@
     android:paddingBottom="5dp">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/cook_details_item"
-        android:layout_weight="1"
-        android:gravity="center" />
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/addItem_id" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <Spinner
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/cook_details_quantity"
-        android:layout_weight="1"
-        android:gravity="center" />
+        android:id="@+id/addItem_category"
+        android:layout_weight="1" />
 
-    <TextView
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addItem_subcategory"
+        android:layout_weight="1" />
+
+    <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/cook_details_price"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/addItem_quantity"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:hint="Quantity" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/addItem_price"
+        android:layout_weight="1"
+        android:hint="Price" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -36,6 +47,5 @@
         android:id="@+id/cook_details_delete"
         android:background="@android:drawable/ic_delete"
         android:gravity="center_vertical|right" />
-
 
 </LinearLayout>

@@ -6,30 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.anilicious.rigfinances.beans.Bore;
-import com.anilicious.rigfinances.beans.Cook;
-import com.anilicious.rigfinances.beans.CookItem;
-import com.anilicious.rigfinances.beans.Credit;
-import com.anilicious.rigfinances.beans.Diesel;
-import com.anilicious.rigfinances.beans.Employee;
-import com.anilicious.rigfinances.beans.Maintenance;
-import com.anilicious.rigfinances.beans.Pipe;
-import com.anilicious.rigfinances.beans.Road;
-import com.anilicious.rigfinances.beans.Salary;
-import com.anilicious.rigfinances.beans.Site;
-import com.anilicious.rigfinances.beans.ToolItem;
-import com.anilicious.rigfinances.beans.Tools;
-import com.anilicious.rigfinances.beans.User;
-import com.anilicious.rigfinances.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by ANBARASI on 14/11/14.

@@ -3,19 +3,16 @@ package com.anilicious.rigfinances.fragments;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioGroup;
+
 import com.anilicious.rigfinances.activities.AddItemListAdapter;
-import com.anilicious.rigfinances.activities.VouchersActivity;
-import com.anilicious.rigfinances.beans.AddItem;
-import com.anilicious.rigfinances.beans.Cook;
-import com.anilicious.rigfinances.beans.CookItem;
+import com.anilicious.rigfinances.activities.DataEntryActivity;
+import com.anilicious.rigfinances.beans.Item;
 import com.anilicious.rigfinances.database.DBAdapter;
 import com.anilicious.rigfinances.finances.R;
 import com.anilicious.rigfinances.utils.CommonUtils;
@@ -28,10 +25,10 @@ import java.util.List;
 /**
  * Created by ANBARASI on 11/11/14.
  */
-public class CookFragment extends Fragment {
+public class DataEntryFragment extends Fragment {
 
-    private List<CookItem> cookItems;
-    private AddItemListAdapter list_cook_adapter;
+    private List<Item> items;
+    private AddItemListAdapter list_items_adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,28 +49,14 @@ public class CookFragment extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
                 String formattedDate = df.format(inserted_date_c.getTime());
                 int inserted_date = Integer.parseInt(formattedDate);
-                if(((VouchersActivity)getActivity()).validForm()){ // TODO: Test validation
-                    //float totalAmount = Float.parseFloat(etTotalAmount.getText().toString());
+                if(((DataEntryActivity)getActivity()).validForm()){ // TODO: Test validation
                     String spentBy = etSpentBy.getText().toString();
-                    //List<CookItem> cookItems = addCookItems();
 
                     ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_cook);
-                    //for(int i = 0; i < group.getChildCount(); i++){
-                    for(CookItem cookItem : cookItems){
-                        //View form_field = group.getChildAt(i);
-                        //EditText etItem = (EditText)form_field.findViewById(R.id.addItem_item);
-                        //EditText etQuantity = (EditText)form_field.findViewById(R.id.addItem_quantity);
-                        //EditText etPrice = (EditText)form_field.findViewById(R.id.addItem_price);
-
-                        //String item = etItem.getText().toString();
-                        String item = cookItem.getItem();
-                        //int quantity = Integer.parseInt(etQuantity.getText().toString());
-                        int quantity = cookItem.getQuantity();
-                        //float price = Float.parseFloat(etPrice.getText().toString());
-                            float price = cookItem.getAmount();
-
-                        //CookItem cookItem = new CookItem(item, quantity, price);
-                        //cookItems.add(cookItem);
+                    for(Item item : items){
+                        String item = item.getItem();
+                        int quantity = item.getQuantity();
+                        float price = item.getAmount();
 
                         DebitFragment parent = (DebitFragment)getParentFragment();
 
@@ -95,8 +78,8 @@ public class CookFragment extends Fragment {
 
                     // Clear the Form
                     ((VouchersActivity)getActivity()).clearForm();
-                    cookItems.clear();
-                    list_cook_adapter.notifyDataSetChanged();
+                    items.clear();
+                    list_items_adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -105,8 +88,8 @@ public class CookFragment extends Fragment {
     }
 
     // Loop through and add the list of Cook Items
-    public List<CookItem> addCookItems(){
-        List<CookItem> cookItems = new ArrayList<CookItem>();
+    public List<Item> addItems(){
+        List<Item> items = new ArrayList<Item>();
 
         ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_cook);
         for(int i = 0; i < group.getChildCount(); i++){
@@ -119,26 +102,26 @@ public class CookFragment extends Fragment {
             int quantity = Integer.parseInt(etQuantity.getText().toString());
             float price = Float.parseFloat(etPrice.getText().toString());
 
-            CookItem cookItem = new CookItem(item, quantity, price);
-            cookItems.add(cookItem);
+            Item item = new Item(item, quantity, price);
+            items.add(item);
         }
 
-        return cookItems;
+        return items;
     }
 
     public void setupCookList(View view){
-        cookItems = new ArrayList<CookItem>();
+        items = new ArrayList<Item>();
 
         ListView list_cook = (ListView)view.findViewById(R.id.list_cook);
-        list_cook_adapter = new AddItemListAdapter(getActivity(), cookItems, CommonUtils.VOUCHER_COOK);
-        list_cook.setAdapter(list_cook_adapter);
+        list_items_adapter = new AddItemListAdapter(getActivity(), items);
+        list_cook.setAdapter(list_items_adapter);
 
         Button btn_addItem = (Button)view.findViewById(R.id.button_addItem);
         btn_addItem.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 final Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.fragment_cook_rows);
+                dialog.setContentView(R.layout.fragment_data_entry_rows);
                 dialog.setTitle("Cooking Expense Details");
 
                 final EditText etItem = (EditText)dialog.findViewById(R.id.addItem_item);
@@ -149,15 +132,15 @@ public class CookFragment extends Fragment {
                 btn_addDetails.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.addCookItem_parent);
+                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.addItem_parent);
                         if(CommonUtils.validForm(group)){
                             String item = etItem.getText().toString();
                             int quantity = Integer.parseInt(etQuantity.getText().toString());
                             float price = Float.parseFloat(etPrice.getText().toString());
 
-                            CookItem cookItem = new CookItem(item, quantity, price);
-                            cookItems.add(cookItem);
-                            list_cook_adapter.notifyDataSetChanged();
+                            Item item = new Item(item, quantity, price);
+                            items.add(item);
+                            list_items_adapter.notifyDataSetChanged();
 
                             dialog.dismiss();
                         }

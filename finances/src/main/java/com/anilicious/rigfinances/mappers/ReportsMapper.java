@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.anilicious.rigfinances.activities.ReportsActivity;
 import com.anilicious.rigfinances.database.DBAdapter;
 import com.anilicious.rigfinances.utils.CommonUtils;
 

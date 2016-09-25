@@ -1,54 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.anilicious.rigfinances.finances" >
-
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/vouchers"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.anilicious.rigfinances.activities.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.VouchersActivity"
-            android:label="@string/title_activity_vouchers"
-            android:parentActivityName="com.anilicious.rigfinances.activities.MainActivity" >
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.BoreEntryActivity"
-            android:label="@string/title_activity_bore_entry"
-            android:parentActivityName="com.anilicious.rigfinances.activities.MainActivity" >
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.EmployeeDetailsActivity"
-            android:label="@string/title_activity_employee_details"
-            android:parentActivityName="com.anilicious.rigfinances.activities.MainActivity" >
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.ReportsActivity"
-            android:label="@string/title_activity_reports"
-            android:parentActivityName="com.anilicious.rigfinances.activities.MainActivity" >
-        </activity>
-        <activity
-            android:name="com.anilicious.rigfinances.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="com.anilicious.rigfinances.activities.MainActivity" >
-        </activity>
-    </application>
+    package="com.anilicious.rigfinances.finances">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -58,5 +10,15 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/vouchers"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.anilicious.rigfinances.activities.DataEntryActivity"
+            android:label="@string/title_activity_data_entry"></activity>
+    </application>
 
 </manifest>
