@@ -129,7 +129,7 @@ public class DataEntryFragment extends Fragment {
                 btn_addDetails.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.data_entry_fragment);
+                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.data_entry_dialog_parent);
                         if(CommonUtils.validForm(group)){
                             int id = Integer.parseInt(tvId.getText().toString());
                             String category = spCategory.getSelectedItem().toString();

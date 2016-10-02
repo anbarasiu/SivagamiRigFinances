@@ -25,12 +25,12 @@ public class DataEntryActivity extends Activity {
      *  Reset form once Submitted button is clicked
      */
     public void clearForm(){
-        ViewGroup group = (ViewGroup)findViewById(R.id.data_entry_fragment);
+        ViewGroup group = (ViewGroup)findViewById(R.id.data_entry_fragment_parent);
         CommonUtils.clearForm(group);
     }
 
     public boolean validForm(){
-        ViewGroup group = (ViewGroup)findViewById(R.id.data_entry_fragment);
+        ViewGroup group = (ViewGroup)findViewById(R.id.data_entry_fragment_parent);
         return CommonUtils.validForm(group);
     }
 
