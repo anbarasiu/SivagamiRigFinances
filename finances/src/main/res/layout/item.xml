@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/addItem_quantity"
+        android:id="@+id/addItem_amount"
         android:layout_weight="1"
         android:hint="Quantity" />
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/addItem_price"
+        android:id="@+id/addItem_remarks"
         android:layout_weight="1"
         android:hint="Price" />
 
@@ -44,7 +44,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:id="@+id/cook_details_delete"
+        android:id="@+id/addItem_delete"
         android:background="@android:drawable/ic_delete"
         android:gravity="center_vertical|right" />
 

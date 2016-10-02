@@ -7,6 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.anilicious.rigfinances.beans.Bore;
+import com.anilicious.rigfinances.beans.Cook;
+import com.anilicious.rigfinances.beans.Credit;
+import com.anilicious.rigfinances.beans.Diesel;
+import com.anilicious.rigfinances.beans.Employee;
+import com.anilicious.rigfinances.beans.Item;
+import com.anilicious.rigfinances.beans.Maintenance;
+import com.anilicious.rigfinances.beans.Pipe;
+import com.anilicious.rigfinances.beans.Road;
+import com.anilicious.rigfinances.beans.Salary;
+import com.anilicious.rigfinances.beans.Site;
+import com.anilicious.rigfinances.beans.Tools;
+import com.anilicious.rigfinances.beans.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +38,13 @@ public class DBAdapter extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
 
     /* BEGIN : Tables - Create Statements */
+    private static final String ITEM_DATABASE_NAME = "ITEM";
+    private static final String ITEM_DATABASE_CREATE = "CREATE TABLE " + ITEM_DATABASE_NAME + "(" +
+            "id " + "INTEGER primary key, " +
+            "category" + " text, " +
+            "subCategory" + " text, " +
+            "remarks" + " text, " +
+            "amount" + " number);";
 
     private static final String DIESEL_DATABASE_NAME = "DIESEL";
     private static final String DIESEL_DATABASE_CREATE = "CREATE TABLE " + DIESEL_DATABASE_NAME + "(" +
@@ -45,14 +66,6 @@ public class DBAdapter extends SQLiteOpenHelper{
             "amount" + " number, " +
             "spent_by" + " text, " +
             "Date_entered" + " number);";
-
-    /*private static final String COOKITEM_DATABASE_NAME = "COOKITEM";
-    private static final String COOKITEM_DATABASE_CREATE = "CREATE TABLE " + COOKITEM_DATABASE_NAME + "(" +
-            "cook_key" + " INTEGER, " + // 'C' + number
-            "item_key" + " number, " +
-            "item" + " text, " +
-            "quantity" + " number, " +
-            "amount" + " number);";*/
 
     private static final String ROAD_DATABASE_NAME = "ROAD";
     private static final String ROAD_DATABASE_CREATE = "CREATE TABLE " + ROAD_DATABASE_NAME + "(" +
@@ -85,16 +98,6 @@ public class DBAdapter extends SQLiteOpenHelper{
             "amount" + " number, " +
             "spent_by" + " text, " +
             "Date_entered" + " number);";
-
-    /*private static final String TOOLITEM_DATABASE_NAME = "TOOLITEM";
-    private static final String TOOLITEM_DATABASE_CREATE = "CREATE TABLE " + TOOLITEM_DATABASE_NAME + "(" +
-            "tool_key" + "INTEGER, " + // 'C' + number
-            "item_key" + " number, " +
-            "item" + " text, " +
-            "details" + " text, " +
-            "company" + " text, " +
-            "quantity" + " number, " +
-            "amount" + " number);";*/
 
     private static final String PIPE_DATABASE_NAME = "PIPE";
     private static final String PIPE_DATABASE_CREATE = "CREATE TABLE " + PIPE_DATABASE_NAME + "(" +
@@ -184,14 +187,12 @@ public class DBAdapter extends SQLiteOpenHelper{
 
     /* END : Tables - Create Statements */
 
-    private static final String[] tables = new String[] {USER_DATABASE_CREATE,
+    private static final String[] tables = new String[] {ITEM_DATABASE_CREATE,
                                             DIESEL_DATABASE_CREATE,
                                             COOK_DATABASE_CREATE,
-                                            /*COOKITEM_DATABASE_CREATE,*/
                                             ROAD_DATABASE_CREATE,
                                             MAINTENANCE_DATABASE_CREATE,
                                             TOOL_DATABASE_CREATE,
-                                            /*TOOLITEM_DATABASE_CREATE,*/
                                             PIPE_DATABASE_CREATE,
                                             SALARY_DATABASE_CREATE,
                                             SITE_DATABASE_CREATE,
@@ -200,6 +201,7 @@ public class DBAdapter extends SQLiteOpenHelper{
                                             EMPLOYEE_DATABASE_CREATE};
 
     private static final String[] tableNames = new String[] {
+            ITEM_DATABASE_NAME,
             DIESEL_DATABASE_NAME,
             COOK_DATABASE_NAME,
             ROAD_DATABASE_NAME,
@@ -248,6 +250,18 @@ public class DBAdapter extends SQLiteOpenHelper{
 
     /* BEGIN : Tables - Insert Methods */
 
+    public void insertItem(Item item){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", item.getId());
+        values.put("category", item.getCategory());
+        values.put("subCategory", item.getSubCategory());
+        values.put("amount", item.getAmount());
+        values.put("remarks", item.getRemarks());
+        database.insert(ITEM_DATABASE_NAME, null, values);
+        database.close();
+    }
+/*
     public void insertUser(User user){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -258,7 +272,7 @@ public class DBAdapter extends SQLiteOpenHelper{
         database.insert(USER_DATABASE_NAME, null, values);
         database.close();
     }
-
+*/
     public List<User> retrieveUsers(){
         List<User> usersList = new ArrayList<User>();
 
@@ -305,20 +319,10 @@ public class DBAdapter extends SQLiteOpenHelper{
         values.put("quantity", cook.getQuantity());
         values.put("amount", cook.getPrice());
         values.put("spent_by", cook.getSpentBy());
-        /*values.put("amount", cook.getAmount());*/
 
         database.insert(COOK_DATABASE_NAME, null, values);
         database.close();
     }
-
-    /*public void insertCookItem(CookItem cookItem){
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-
-        database.insert(COOKITEM_DATABASE_NAME, null, values);
-        database.close();
-    }*/
 
     public void insertRoad(Road road){
         SQLiteDatabase database = this.getWritableDatabase();
@@ -356,26 +360,10 @@ public class DBAdapter extends SQLiteOpenHelper{
         values.put("quantity", tool.getQuantity());
         values.put("amount", tool.getPrice());
         values.put("spent_by", tool.getSpentBy());
-        /*values.put("company", tool.getCompany());
-        values.put("total_amount", tool.getTotalAmount());*/
 
         database.insert(TOOL_DATABASE_NAME, null, values);
         database.close();
     }
-
-    /*public void insertToolItem(ToolItem toolItem){
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("item", toolItem.getItem());
-        values.put("details", toolItem.getDetails());
-        values.put("company", toolItem.getCompany());
-        values.put("quantity", toolItem.getQuantity());
-        values.put("amount", toolItem.getAmount());
-        values.put("amount", toolItem.getTotalAmount());
-
-        database.insert(TOOLITEM_DATABASE_NAME, null, values);
-        database.close();
-    }*/
 
     public void insertPipe(Pipe pipe){
         SQLiteDatabase database = this.getWritableDatabase();
@@ -414,7 +402,6 @@ public class DBAdapter extends SQLiteOpenHelper{
         values.put("received_from", credit.getFrom());
         values.put("received_by", credit.getReceivedBy());
         values.put("remarks", credit.getRemarks());
-        /*values.put("amount_in_credit", credit.getAmountInCredit());*/
 
         database.insert(CREDIT_DATABASE_NAME, null, values);
         database.close();
@@ -448,7 +435,6 @@ public class DBAdapter extends SQLiteOpenHelper{
         values.put("bill_amount", bore.getBillAmount());
         values.put("commission", bore.getCommission());
         values.put("diesel_used", bore.getDieselUsed());
-        /*values.put("total_amount", bore.getTotalAmount());*/
 
         database.insert(BORE_DATABASE_NAME, null, values);
         database.close();
@@ -488,17 +474,12 @@ public class DBAdapter extends SQLiteOpenHelper{
     public void updateEmployee(Employee employee){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        //values.put("Date", employee.getDate());
         values.put("date_of_joining", employee.getDateOfJoining());
         values.put("date_of_leaving", employee.getDateOfLeaving());
         values.put("inserted_date", employee.getInserted_date());
 
         String employeeNumber = Integer.toString(employee.getNumber());
 
-        /*database.rawQuery("UPDATE " + EMPLOYEE_DATABASE_NAME + " SET date_of_joining = ?, date_of_leaving = ?, inserted_date = ? " +
-                "WHERE employee_number = ? AND inserted_date = (SELECT MAX(inserted_date) from " + EMPLOYEE_DATABASE_NAME + " " +
-                "WHERE employee_number = ?);", new String[]{Integer.toString(employee.getDateOfJoining()), Integer.toString(employee.getDateOfLeaving()), Integer.toString(employee.getInserted_date()), employeeNumber, employeeNumber});
-*/
         Cursor c = database.rawQuery("UPDATE " + EMPLOYEE_DATABASE_NAME + " SET date_of_joining = "+employee.getDateOfJoining()+", date_of_leaving = "+employee.getDateOfLeaving()+", inserted_date = "+employee.getInserted_date()+" " +
                 "WHERE employee_number = "+employeeNumber+" AND inserted_date = (SELECT MAX(inserted_date) from " + EMPLOYEE_DATABASE_NAME + " " +
                 "WHERE employee_number = "+employeeNumber+");", null);
@@ -591,55 +572,10 @@ public class DBAdapter extends SQLiteOpenHelper{
         HashMap<String, Double> expenseReport = new HashMap<String, Double>();
         List<String> columnRetriever = new ArrayList<String>();
 
-        //String queryColumns = "SELECT";
-        //String queryTables = "";
-        //String columnName = "";
-
         String query = "";
         SQLiteDatabase database = this.getReadableDatabase();
         for(String type : selectedExpenses){
             query = "SELECT SUM(amount) from " + type + " where Date BETWEEN " + dateFrom + " AND " + dateTo;
-            /* switch(type){
-                case CommonUtils.CONSTANTS.DIESEL :
-                    columnName = "d";
-                    queryTables += " " + DIESEL_DATABASE_NAME + " d";
-                    break;
-                case CommonUtils.CONSTANTS.MAINTENANCE :
-                    columnName = "m";
-                    queryTables += " " + MAINTENANCE_DATABASE_NAME + " m";
-                    break;
-                case CommonUtils.CONSTANTS.COOK :
-                    columnName = "c";
-                    queryTables += " " + COOK_DATABASE_NAME + " c";
-                    break;
-                case CommonUtils.CONSTANTS.PIPE :
-                    columnName = "p";
-                    queryTables += " " + PIPE_DATABASE_NAME + " p";
-                    break;
-                case CommonUtils.CONSTANTS.ROAD :
-                    columnName = "r";
-                    queryTables += " " + ROAD_DATABASE_NAME + " r";
-                    break;
-                case CommonUtils.CONSTANTS.SITE :
-                    columnName = "si";
-                    queryTables += " " + SITE_DATABASE_NAME + " si";
-                    break;
-                case CommonUtils.CONSTANTS.SALARY :
-                    columnName = "sa";
-                    queryTables += " " + SALARY_DATABASE_NAME + " sa";
-                    break;
-                case CommonUtils.CONSTANTS.TOOLS :
-                    columnName = "t";
-                    queryTables += " " + TOOL_DATABASE_NAME + " t";
-                    break;
-            }
-            queryColumns += " SUM(" + columnName + ".amount)";
-            if(selectedExpenses.indexOf(type) != selectedExpenses.size() - 1){
-                queryColumns += ",";
-                queryTables += " OUTER JOIN";
-            }
-            columnRetriever.add(type); */
-
             Cursor cursor = database.rawQuery(query, null);
 
             while(cursor.moveToNext()){
@@ -649,8 +585,6 @@ public class DBAdapter extends SQLiteOpenHelper{
             }
         }
         // TODO: Error handling : If no entry made, just return 0
-
-        //String query = queryColumns + " FROM" + queryTables + ";";// " WHERE " + columnName + ".date BETWEEN '" + dateFrom + "' AND '" + dateTo +"';";
 
         database.close();
         return expenseReport;
@@ -701,8 +635,7 @@ public class DBAdapter extends SQLiteOpenHelper{
         SQLiteDatabase database = this.getReadableDatabase();
         HashMap<String, String> salaryReport = new HashMap<String, String>();
 
-        String query = /*"SELECT employee_name,employee_number,sum(date_of_joining),sum(date_of_leaving),sum(salary) FROM "+ EMPLOYEE_DATABASE_NAME
-                + " WHERE employee_number = " + employeeNumber + ";";*/
+        String query =
                 "SELECT E.employee_name, E.employee_number, E.date_of_joining, E.date_of_leaving, SUM(S.amount) " +
                 "FROM "+ EMPLOYEE_DATABASE_NAME+" E INNER JOIN "+ SALARY_DATABASE_NAME +" S "+
                 "ON E.employee_number = S.employee_number " +
@@ -728,11 +661,6 @@ public class DBAdapter extends SQLiteOpenHelper{
         String query1 = "SELECT SUM(total_depth), SUM(casting_depth), SUM(bill_amount), SUM(commission), SUM(bill_amount), SUM(diesel_used), MIN(engine_hrs_start), MAX(engine_hrs_end) " +
                 "FROM "+ BORE_DATABASE_NAME +
                 " WHERE Date BETWEEN " + dateFrom + " AND " + dateTo + ";";
-        /*"SELECT group_concat(employee_name),employee_number,sum(date_of_joining),sum(date_of_leaving),sum(salary) FROM "+ EMPLOYEE_DATABASE_NAME
-                + " WHERE employee_number = 1001;";*/
-                /*"SELECT SUM(total_depth), SUM(casting_depth), SUM(bill_amount), SUM(commission),MIN(engine_hrs_start), MAX(engine_hrs_end) " +
-                "FROM "+ BORE_DATABASE_NAME +
-                " WHERE Bore_Date BETWEEN " + dateFrom + " AND " + dateTo + ";";*/
 
         Cursor cursor1 = database.rawQuery(query1, null);
 

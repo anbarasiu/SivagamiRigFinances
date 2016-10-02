@@ -7,8 +7,18 @@ public class Item {
     private int id;
     private String category;
     private String subCategory;
-    private int remarks;
-    private int amount;
+    private String remarks;
+    private float amount;
+
+    public Integer getDate() {
+        return date;
+    }
+
+    public void setDate(Integer date) {
+        this.date = date;
+    }
+
+    private Integer date;
 
     public int getId() {
         return id;
@@ -34,19 +44,19 @@ public class Item {
         this.subCategory = subCategory;
     }
 
-    public int getRemarks() {
+    public String getRemarks() {
         return remarks;
     }
 
-    public void setRemarks(int remarks) {
+    public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 }

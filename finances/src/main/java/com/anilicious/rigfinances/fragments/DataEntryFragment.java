@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.anilicious.rigfinances.activities.AddItemListAdapter;
 import com.anilicious.rigfinances.activities.DataEntryActivity;
@@ -32,13 +34,12 @@ public class DataEntryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_vouchers_cook, null);
-        setupCookList(view);
+        View view = inflater.inflate(R.layout.fragment_data_entry_rows, null);
+        setupItemList(view);
 
         // UI Object References
-        Button btnSubmit = (Button)view.findViewById(R.id.btn_submit);
-        //final EditText etTotalAmount = (EditText)view.findViewById(R.id.editText3);
-        final EditText etSpentBy = (EditText)view.findViewById(R.id.editText5);
+        Button btnSubmit = (Button)view.findViewById(R.id.item_submit_details);
+        final Spinner spDate = (Spinner)view.findViewById(R.id.date);
 
         // On Click of Submit
         btnSubmit.setOnClickListener(new View.OnClickListener(){
@@ -50,34 +51,19 @@ public class DataEntryFragment extends Fragment {
                 String formattedDate = df.format(inserted_date_c.getTime());
                 int inserted_date = Integer.parseInt(formattedDate);
                 if(((DataEntryActivity)getActivity()).validForm()){ // TODO: Test validation
-                    String spentBy = etSpentBy.getText().toString();
-
-                    ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_cook);
+                    ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_item);
                     for(Item item : items){
-                        String item = item.getItem();
-                        int quantity = item.getQuantity();
-                        float price = item.getAmount();
-
-                        DebitFragment parent = (DebitFragment)getParentFragment();
-
-                        Cook cook = new Cook();
-                        //TODO: Calculate Total Amount?
-                        cook.setSpentBy(spentBy);
-                        cook.setItem(item);
-                        cook.setQuantity(quantity);
-                        cook.setPrice(price);
-                        cook.setInsertedDate(inserted_date);
-                        String date = parent.getEntryDate().toString();
-                        Integer Cook_date = Integer.parseInt(CommonUtils.formatDateEntry(date));  // TODO: Test
-                        cook.setDate(Cook_date);
+                        String date = spDate.getSelectedItem().toString();
+                        Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
+                        item.setDate(Item_date);
 
                         // Insert to DB
                         DBAdapter dbAdapter = DBAdapter.getInstance(getActivity());
-                        dbAdapter.insertCook(cook);
+                        dbAdapter.insertItem(item);
                     }
 
                     // Clear the Form
-                    ((VouchersActivity)getActivity()).clearForm();
+                    ((DataEntryActivity)getActivity()).clearForm();
                     items.clear();
                     list_items_adapter.notifyDataSetChanged();
                 }
@@ -87,34 +73,43 @@ public class DataEntryFragment extends Fragment {
         return view;
     }
 
-    // Loop through and add the list of Cook Items
+    // Loop through and add the list of Item Items
     public List<Item> addItems(){
         List<Item> items = new ArrayList<Item>();
 
-        ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_cook);
+        ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_item);
         for(int i = 0; i < group.getChildCount(); i++){
             View form_field = group.getChildAt(i);
-            EditText etItem = (EditText)form_field.findViewById(R.id.addItem_item);
-            EditText etQuantity = (EditText)form_field.findViewById(R.id.addItem_quantity);
-            EditText etPrice = (EditText)form_field.findViewById(R.id.addItem_price);
+            TextView tvId = (TextView)form_field.findViewById(R.id.addItem_id);
+            Spinner spCategory = (Spinner)form_field.findViewById(R.id.addItem_category);
+            Spinner spSubCategory = (Spinner)form_field.findViewById(R.id.addItem_subcategory);
+            EditText etAmount = (EditText)form_field.findViewById(R.id.addItem_amount);
+            EditText etRemarks = (EditText)form_field.findViewById(R.id.addItem_remarks);
 
-            String item = etItem.getText().toString();
-            int quantity = Integer.parseInt(etQuantity.getText().toString());
-            float price = Float.parseFloat(etPrice.getText().toString());
+            int id = Integer.parseInt(tvId.getText().toString());
+            String category = spCategory.getSelectedItem().toString();
+            String subCategory = spSubCategory.getSelectedItem().toString();
+            float amount = Float.parseFloat(etAmount.getText().toString());
+            String remarks = etRemarks.getText().toString();
 
-            Item item = new Item(item, quantity, price);
+            Item item = new Item();
+            item.setAmount(amount);
+            item.setCategory(category);
+            item.setId(id);
+            item.setRemarks(remarks);
+            item.setSubCategory(subCategory);
             items.add(item);
         }
 
         return items;
     }
 
-    public void setupCookList(View view){
+    public void setupItemList(View view){
         items = new ArrayList<Item>();
 
-        ListView list_cook = (ListView)view.findViewById(R.id.list_cook);
+        ListView list_item = (ListView)view.findViewById(R.id.list_item);
         list_items_adapter = new AddItemListAdapter(getActivity(), items);
-        list_cook.setAdapter(list_items_adapter);
+        list_item.setAdapter(list_items_adapter);
 
         Button btn_addItem = (Button)view.findViewById(R.id.button_addItem);
         btn_addItem.setOnClickListener(new View.OnClickListener() {
@@ -122,23 +117,32 @@ public class DataEntryFragment extends Fragment {
             public void onClick(View view) {
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.fragment_data_entry_rows);
-                dialog.setTitle("Cooking Expense Details");
+                dialog.setTitle("Iteming Expense Details");
 
-                final EditText etItem = (EditText)dialog.findViewById(R.id.addItem_item);
-                final EditText etQuantity = (EditText)dialog.findViewById(R.id.addItem_quantity);
-                final EditText etPrice = (EditText)dialog.findViewById(R.id.addItem_price);
+                final TextView tvId = (TextView)dialog.findViewById(R.id.addItem_id);
+                final Spinner spCategory = (Spinner)dialog.findViewById(R.id.addItem_category);
+                final Spinner spSubCategory = (Spinner)dialog.findViewById(R.id.addItem_subcategory);
+                final EditText etAmount = (EditText)dialog.findViewById(R.id.addItem_amount);
+                final EditText etRemarks = (EditText)dialog.findViewById(R.id.addItem_remarks);
 
-                Button btn_addDetails = (Button)dialog.findViewById(R.id.cook_submit_details);
+                Button btn_addDetails = (Button)dialog.findViewById(R.id.item_submit_details);
                 btn_addDetails.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.addItem_parent);
+                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.data_entry_fragment);
                         if(CommonUtils.validForm(group)){
-                            String item = etItem.getText().toString();
-                            int quantity = Integer.parseInt(etQuantity.getText().toString());
-                            float price = Float.parseFloat(etPrice.getText().toString());
+                            int id = Integer.parseInt(tvId.getText().toString());
+                            String category = spCategory.getSelectedItem().toString();
+                            String subCategory = spSubCategory.getSelectedItem().toString();
+                            float amount = Float.parseFloat(etAmount.getText().toString());
+                            String remarks = etRemarks.getText().toString();
 
-                            Item item = new Item(item, quantity, price);
+                            Item item = new Item();
+                            item.setAmount(amount);
+                            item.setCategory(category);
+                            item.setId(id);
+                            item.setRemarks(remarks);
+                            item.setSubCategory(subCategory);
                             items.add(item);
                             list_items_adapter.notifyDataSetChanged();
 

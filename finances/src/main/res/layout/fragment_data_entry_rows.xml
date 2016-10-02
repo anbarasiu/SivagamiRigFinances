@@ -53,6 +53,26 @@
 
 </LinearLayout>
 
+<Spinner
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/date" />
+
+<ListView
+    android:layout_width="fill_parent"
+    android:layout_height="150dp"
+    android:id="@+id/list_item"
+    android:layout_gravity="center" />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/button_addItem"
+    android:drawableLeft="@android:drawable/ic_input_add"
+    android:text="Add Item"
+    android:textAlignment="center"
+    android:paddingRight="10dp" />
+
 <LinearLayout
 android:orientation="horizontal"
 android:layout_width="fill_parent"
@@ -64,7 +84,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/cook_submit_details"
+    android:id="@+id/item_submit_details"
     android:text="Add Details"
     android:layout_gravity="center_horizontal"
     android:gravity="center_vertical|center_horizontal"

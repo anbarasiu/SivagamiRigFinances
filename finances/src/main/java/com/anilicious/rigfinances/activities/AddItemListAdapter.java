@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Spinner;
 
 import com.anilicious.rigfinances.beans.Item;
 import com.anilicious.rigfinances.finances.R;
@@ -72,17 +73,17 @@ public class AddItemListAdapter extends BaseAdapter {
                     holder = (ViewHolder) convertView.getTag();
                 }
 
-                holder.id = (TextView)convertView.findViewById(R.id.cook_details_item);
-                holder.category = (TextView)convertView.findViewById(R.id.cook_details_quantity);
-                holder.subCategory = (TextView)convertView.findViewById(R.id.cook_details_price);
-                holder.amount = (TextView)convertView.findViewById(R.id.cook_details_price);
-                holder.remarks = (TextView)convertView.findViewById(R.id.cook_details_price);
-                holder.delete = (Button)convertView.findViewById(R.id.cook_details_delete);
+                holder.id = (TextView)convertView.findViewById(R.id.addItem_id);
+                holder.category = (Spinner)convertView.findViewById(R.id.addItem_category);
+                holder.subCategory = (Spinner)convertView.findViewById(R.id.addItem_subcategory);
+                holder.amount = (TextView)convertView.findViewById(R.id.addItem_amount);
+                holder.remarks = (TextView)convertView.findViewById(R.id.addItem_remarks);
+                holder.delete = (Button)convertView.findViewById(R.id.addItem_delete);
 
                 holder.id.setText(((Item)items.get(position)).getId());
-                holder.category.setText((((Item)items.get(position)).getCategory()));
-                holder.subCategory.setText((((Item)items.get(position)).getSubCategory()));
-                holder.amount.setText((((Item)items.get(position)).getAmount()));
+                holder.category.setSelection(position);
+                holder.subCategory.setSelection(position);
+                holder.amount.setText(String.valueOf(((Item)items.get(position)).getAmount()));
                 holder.remarks.setText((((Item)items.get(position)).getRemarks()));
 
                 holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +107,8 @@ public class AddItemListAdapter extends BaseAdapter {
 
     static class ViewHolder{
         TextView id;
-        TextView category;
-        TextView subCategory;
+        Spinner category;
+        Spinner subCategory;
         TextView amount;
         TextView remarks;
         Button delete;
