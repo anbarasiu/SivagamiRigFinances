@@ -73,22 +73,22 @@ public class DataEntryFragment extends Fragment {
         return view;
     }
 
-    // Loop through and add the list of Item Items
+    // Loop through and add the list of Items
     public List<Item> addItems(){
         List<Item> items = new ArrayList<Item>();
 
         ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_item);
         for(int i = 0; i < group.getChildCount(); i++){
             View form_field = group.getChildAt(i);
-            TextView tvId = (TextView)form_field.findViewById(R.id.addItem_id);
-            Spinner spCategory = (Spinner)form_field.findViewById(R.id.addItem_category);
-            Spinner spSubCategory = (Spinner)form_field.findViewById(R.id.addItem_subcategory);
-            EditText etAmount = (EditText)form_field.findViewById(R.id.addItem_amount);
-            EditText etRemarks = (EditText)form_field.findViewById(R.id.addItem_remarks);
+            TextView tvId = (TextView)form_field.findViewById(R.id.id);
+            TextView spCategory = (TextView)form_field.findViewById(R.id.category);
+            TextView spSubCategory = (TextView)form_field.findViewById(R.id.subcategory);
+            TextView etAmount = (TextView)form_field.findViewById(R.id.amount);
+            TextView etRemarks = (TextView)form_field.findViewById(R.id.remarks);
 
             int id = Integer.parseInt(tvId.getText().toString());
-            String category = spCategory.getSelectedItem().toString();
-            String subCategory = spSubCategory.getSelectedItem().toString();
+            String category = spCategory.getText().toString();
+            String subCategory = spSubCategory.getText().toString();
             float amount = Float.parseFloat(etAmount.getText().toString());
             String remarks = etRemarks.getText().toString();
 
@@ -117,13 +117,13 @@ public class DataEntryFragment extends Fragment {
             public void onClick(View view) {
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.fragment_data_entry_rows);
-                dialog.setTitle("Iteming Expense Details");
+                dialog.setTitle("Item Expense Details");
 
-                final TextView tvId = (TextView)dialog.findViewById(R.id.addItem_id);
-                final Spinner spCategory = (Spinner)dialog.findViewById(R.id.addItem_category);
-                final Spinner spSubCategory = (Spinner)dialog.findViewById(R.id.addItem_subcategory);
-                final EditText etAmount = (EditText)dialog.findViewById(R.id.addItem_amount);
-                final EditText etRemarks = (EditText)dialog.findViewById(R.id.addItem_remarks);
+                final TextView tvId = (TextView)dialog.findViewById(R.id.dialog_id);
+                final Spinner spCategory = (Spinner)dialog.findViewById(R.id.dialog_category);
+                final Spinner spSubCategory = (Spinner)dialog.findViewById(R.id.dialog_subcategory);
+                final EditText etAmount = (EditText)dialog.findViewById(R.id.dialog_amount);
+                final EditText etRemarks = (EditText)dialog.findViewById(R.id.dialog_remarks);
 
                 Button btn_addDetails = (Button)dialog.findViewById(R.id.item_submit_details);
                 btn_addDetails.setOnClickListener(new View.OnClickListener(){

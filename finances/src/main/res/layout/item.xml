@@ -9,35 +9,35 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:id="@+id/addItem_id" />
+        android:id="@+id/id" />
 
-    <Spinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addItem_category"
+        android:id="@+id/category"
         android:layout_weight="1" />
 
-    <Spinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addItem_subcategory"
+        android:id="@+id/subcategory"
         android:layout_weight="1" />
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/addItem_amount"
+        android:id="@+id/amount"
         android:layout_weight="1"
         android:hint="Quantity" />
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/addItem_remarks"
+        android:id="@+id/remarks"
         android:layout_weight="1"
         android:hint="Price" />
 

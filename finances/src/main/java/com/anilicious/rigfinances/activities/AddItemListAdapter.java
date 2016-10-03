@@ -73,16 +73,16 @@ public class AddItemListAdapter extends BaseAdapter {
                     holder = (ViewHolder) convertView.getTag();
                 }
 
-                holder.id = (TextView)convertView.findViewById(R.id.addItem_id);
-                holder.category = (Spinner)convertView.findViewById(R.id.addItem_category);
-                holder.subCategory = (Spinner)convertView.findViewById(R.id.addItem_subcategory);
-                holder.amount = (TextView)convertView.findViewById(R.id.addItem_amount);
-                holder.remarks = (TextView)convertView.findViewById(R.id.addItem_remarks);
+                holder.id = (TextView)convertView.findViewById(R.id.id);
+                holder.category = (TextView)convertView.findViewById(R.id.category);
+                holder.subCategory = (TextView)convertView.findViewById(R.id.subcategory);
+                holder.amount = (TextView)convertView.findViewById(R.id.amount);
+                holder.remarks = (TextView)convertView.findViewById(R.id.remarks);
                 holder.delete = (Button)convertView.findViewById(R.id.addItem_delete);
 
                 holder.id.setText(((Item)items.get(position)).getId());
-                holder.category.setSelection(position);
-                holder.subCategory.setSelection(position);
+                holder.category.setText(((Item)items.get(position)).getCategory());
+                holder.subCategory.setText(((Item)items.get(position)).getSubCategory());
                 holder.amount.setText(String.valueOf(((Item)items.get(position)).getAmount()));
                 holder.remarks.setText((((Item)items.get(position)).getRemarks()));
 
@@ -107,8 +107,8 @@ public class AddItemListAdapter extends BaseAdapter {
 
     static class ViewHolder{
         TextView id;
-        Spinner category;
-        Spinner subCategory;
+        TextView category;
+        TextView subCategory;
         TextView amount;
         TextView remarks;
         Button delete;
