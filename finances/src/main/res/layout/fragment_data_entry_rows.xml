@@ -11,23 +11,26 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_parent">
+    android:id="@+id/data_entry_dialog_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
+        android:text=""
+        android:layout_weight="1"
         android:id="@+id/dialog_id" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/dialog_category"/>
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/dialog_subcategory"/>
 
     <EditText
@@ -36,14 +39,15 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/dialog_amount"
+        android:layout_weight="1"
         android:hint="Amount" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
         android:id="@+id/dialog_remarks"
+        android:layout_weight="1"
         android:hint="Remarks" />
 
 </LinearLayout>

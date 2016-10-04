@@ -29,50 +29,6 @@ import java.util.List;
  */
 public class DataEntryFragment extends Fragment {
 
-    private List<Item> items;
-    private AddItemListAdapter list_items_adapter;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_data_entry_rows, null);
-        setupItemList(view);
-
-        // UI Object References
-        Button btnSubmit = (Button)view.findViewById(R.id.item_submit_details);
-        final Spinner spDate = (Spinner)view.findViewById(R.id.date);
-
-        // On Click of Submit
-        btnSubmit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                Calendar inserted_date_c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-                String formattedDate = df.format(inserted_date_c.getTime());
-                int inserted_date = Integer.parseInt(formattedDate);
-                if(((DataEntryActivity)getActivity()).validForm()){ // TODO: Test validation
-                    ViewGroup group = (ViewGroup)getActivity().findViewById(R.id.list_item);
-                    for(Item item : items){
-                        String date = spDate.getSelectedItem().toString();
-                        Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
-                        item.setDate(Item_date);
-
-                        // Insert to DB
-                        DBAdapter dbAdapter = DBAdapter.getInstance(getActivity());
-                        dbAdapter.insertItem(item);
-                    }
-
-                    // Clear the Form
-                    ((DataEntryActivity)getActivity()).clearForm();
-                    items.clear();
-                    list_items_adapter.notifyDataSetChanged();
-                }
-            }
-        });
-
-        return view;
-    }
-
     // Loop through and add the list of Items
     public List<Item> addItems(){
         List<Item> items = new ArrayList<Item>();
@@ -104,54 +60,5 @@ public class DataEntryFragment extends Fragment {
         return items;
     }
 
-    public void setupItemList(View view){
-        items = new ArrayList<Item>();
 
-        ListView list_item = (ListView)view.findViewById(R.id.list_item);
-        list_items_adapter = new AddItemListAdapter(getActivity(), items);
-        list_item.setAdapter(list_items_adapter);
-
-        Button btn_addItem = (Button)view.findViewById(R.id.button_addItem);
-        btn_addItem.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                final Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.fragment_data_entry_rows);
-                dialog.setTitle("Item Expense Details");
-
-                final TextView tvId = (TextView)dialog.findViewById(R.id.dialog_id);
-                final Spinner spCategory = (Spinner)dialog.findViewById(R.id.dialog_category);
-                final Spinner spSubCategory = (Spinner)dialog.findViewById(R.id.dialog_subcategory);
-                final EditText etAmount = (EditText)dialog.findViewById(R.id.dialog_amount);
-                final EditText etRemarks = (EditText)dialog.findViewById(R.id.dialog_remarks);
-
-                Button btn_addDetails = (Button)dialog.findViewById(R.id.item_submit_details);
-                btn_addDetails.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        ViewGroup group = (ViewGroup)dialog.findViewById(R.id.data_entry_dialog_parent);
-                        if(CommonUtils.validForm(group)){
-                            int id = Integer.parseInt(tvId.getText().toString());
-                            String category = spCategory.getSelectedItem().toString();
-                            String subCategory = spSubCategory.getSelectedItem().toString();
-                            float amount = Float.parseFloat(etAmount.getText().toString());
-                            String remarks = etRemarks.getText().toString();
-
-                            Item item = new Item();
-                            item.setAmount(amount);
-                            item.setCategory(category);
-                            item.setId(id);
-                            item.setRemarks(remarks);
-                            item.setSubCategory(subCategory);
-                            items.add(item);
-                            list_items_adapter.notifyDataSetChanged();
-
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                dialog.show();
-            }
-     });
-    }
 }
