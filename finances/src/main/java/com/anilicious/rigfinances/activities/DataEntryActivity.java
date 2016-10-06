@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,6 +26,9 @@ public class DataEntryActivity extends Activity {
 
     private List<Item> items;
     private AddItemListAdapter list_items_adapter;
+
+    Spinner spCategory;
+    Spinner spSubCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,7 @@ public class DataEntryActivity extends Activity {
     }
 
     private void populateDates(){
-
+        // TODO: Populate a set of dates
     }
 
     public void setupItemList(){
@@ -88,10 +92,12 @@ public class DataEntryActivity extends Activity {
                 dialog.setTitle("Item Expense Details");
 
                 final TextView tvId = (TextView)dialog.findViewById(R.id.dialog_id);
-                final Spinner spCategory = (Spinner)dialog.findViewById(R.id.dialog_category);
-                final Spinner spSubCategory = (Spinner)dialog.findViewById(R.id.dialog_subcategory);
+                spCategory = (Spinner)dialog.findViewById(R.id.dialog_category);
+                spSubCategory = (Spinner)dialog.findViewById(R.id.dialog_subcategory);
                 final EditText etAmount = (EditText)dialog.findViewById(R.id.dialog_amount);
                 final EditText etRemarks = (EditText)dialog.findViewById(R.id.dialog_remarks);
+
+                setupSpinners(dialog);
 
                 Button btn_addDetails = (Button)dialog.findViewById(R.id.dialog_submit_details);
                 btn_addDetails.setOnClickListener(new View.OnClickListener(){
@@ -99,7 +105,7 @@ public class DataEntryActivity extends Activity {
                     public void onClick(View view) {
                         ViewGroup group = (ViewGroup)dialog.findViewById(R.id.data_entry_dialog_parent);
                         if(CommonUtils.validForm(group)){
-                            int id = Integer.parseInt(tvId.getText().toString());
+                            int id = list_items_adapter.getCount() + 1;
                             String category = spCategory.getSelectedItem().toString();
                             String subCategory = spSubCategory.getSelectedItem().toString();
                             float amount = Float.parseFloat(etAmount.getText().toString());
@@ -121,6 +127,16 @@ public class DataEntryActivity extends Activity {
                 dialog.show();
             }
         });
+    }
+
+    public void setupSpinners(Dialog view){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(DataEntryActivity.this,
+                R.array.vouchers_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spCategory.setAdapter(adapter);
+        spSubCategory.setAdapter(adapter);
     }
 
     /*

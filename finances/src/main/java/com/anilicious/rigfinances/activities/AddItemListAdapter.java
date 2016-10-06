@@ -80,7 +80,7 @@ public class AddItemListAdapter extends BaseAdapter {
                 holder.remarks = (TextView)convertView.findViewById(R.id.remarks);
                 holder.delete = (Button)convertView.findViewById(R.id.addItem_delete);
 
-                holder.id.setText(((Item)items.get(position)).getId());
+                holder.id.setText(String.valueOf(position + 1));
                 holder.category.setText(((Item)items.get(position)).getCategory());
                 holder.subCategory.setText(((Item)items.get(position)).getSubCategory());
                 holder.amount.setText(String.valueOf(((Item)items.get(position)).getAmount()));
