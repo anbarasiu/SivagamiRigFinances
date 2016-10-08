@@ -9,6 +9,7 @@ public class Item {
     private String subCategory;
     private String remarks;
     private float amount;
+    private Integer date;
 
     public Integer getDate() {
         return date;
@@ -17,8 +18,6 @@ public class Item {
     public void setDate(Integer date) {
         this.date = date;
     }
-
-    private Integer date;
 
     public int getId() {
         return id;

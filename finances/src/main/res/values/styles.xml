@@ -6,8 +6,8 @@
         <item name="android:buttonStyle">@style/Custom_Button</item>
     </style>
 
-    <style name="Custom_Button" parent="android:Widget.Button"><!--
-        <item name="android:background">@drawable/custom_button</item>-->
+    <style name="Custom_Button" parent="android:Widget.Button">
+        <item name="android:background">@drawable/custom_button</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:shadowColor">#FF000000</item>

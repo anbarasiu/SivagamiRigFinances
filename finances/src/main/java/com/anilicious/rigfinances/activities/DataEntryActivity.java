@@ -1,8 +1,11 @@
 package com.anilicious.rigfinances.activities;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,19 +19,23 @@ import com.anilicious.rigfinances.beans.Item;
 import com.anilicious.rigfinances.database.DBAdapter;
 import com.anilicious.rigfinances.finances.R;
 import com.anilicious.rigfinances.utils.CommonUtils;
+import com.anilicious.rigfinances.utils.PickerFragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class DataEntryActivity extends Activity {
+public class DataEntryActivity extends Activity implements IDataEntryActivity{
 
     private List<Item> items;
     private AddItemListAdapter list_items_adapter;
 
     Spinner spCategory;
     Spinner spSubCategory;
+    EditText etDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,10 @@ public class DataEntryActivity extends Activity {
 
         // UI Object References
         Button btnSubmit = (Button)findViewById(R.id.item_submit_details);
-        final Spinner spDate = (Spinner)findViewById(R.id.date);
+        etDate = (EditText)findViewById(R.id.date);
 
-        populateDates();
+        // Setup Date Picker
+        setupDatePicker();
         setupItemList();
 
         // On Click of Submit
@@ -54,7 +62,7 @@ public class DataEntryActivity extends Activity {
                 if(validForm()){ // TODO: Test validation
                     ViewGroup group = (ViewGroup)findViewById(R.id.list_item);
                     for(Item item : items){
-                        String date = spDate.getSelectedItem().toString();
+                        String date = etDate.getText().toString();
                         Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
                         item.setDate(Item_date);
 
@@ -70,10 +78,6 @@ public class DataEntryActivity extends Activity {
                 }
             }
         });
-    }
-
-    private void populateDates(){
-        // TODO: Populate a set of dates
     }
 
     public void setupItemList(){
@@ -139,6 +143,30 @@ public class DataEntryActivity extends Activity {
         spSubCategory.setAdapter(adapter);
     }
 
+    // Begin - DatePicker Methods
+
+    private void setupDatePicker(){
+        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+        etDate.setText(dt.format(new Date()).toString());
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment picker = PickerFragment.newInstance(CommonUtils.DIALOG_DATE);
+                picker.show(getFragmentManager(), "datePicker");
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 101){
+            String entryDate = data.getStringExtra("entryDate");
+            etDate.setText(entryDate);
+        }
+    }
+
+    // End - DatePicker Methods
+
     /*
      *  Reset form once Submitted button is clicked
      */
@@ -152,4 +180,10 @@ public class DataEntryActivity extends Activity {
         return CommonUtils.validForm(group);
     }
 
+    @Override
+    public void onDialogDataSet(String string) {
+        if(string != null) {
+            etDate.setText(string);
+        }
+    }
 }
