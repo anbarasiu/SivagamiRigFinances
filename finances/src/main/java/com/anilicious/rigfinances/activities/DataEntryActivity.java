@@ -2,10 +2,16 @@ package com.anilicious.rigfinances.activities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anilicious.rigfinances.beans.Item;
 import com.anilicious.rigfinances.database.DBAdapter;
@@ -21,12 +28,15 @@ import com.anilicious.rigfinances.finances.R;
 import com.anilicious.rigfinances.utils.CommonUtils;
 import com.anilicious.rigfinances.utils.PickerFragment;
 
-import java.text.ParseException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class DataEntryActivity extends Activity implements IDataEntryActivity{
 
@@ -184,6 +194,79 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
     public void onDialogDataSet(String string) {
         if(string != null) {
             etDate.setText(string);
+        }
+    }
+
+    // Action bar menu items - Begin
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_download){
+            ExportDatabaseCSVTask exportDatabaseCSVTask = new ExportDatabaseCSVTask();
+            exportDatabaseCSVTask.execute();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Action bar menu items - End
+
+    /*
+     *  Export DB to a CSV - Background Task
+     */
+    private class ExportDatabaseCSVTask extends AsyncTask<String, String, Boolean> {
+        private final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+        boolean memoryErr = false;
+
+        @Override
+        protected void onPreExecute() {
+            Toast.makeText(DataEntryActivity.this, "Downloading Reports into a CSV at " + Environment.getExternalStorageDirectory().getAbsolutePath() + "...", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            try{
+                int rowCount = 0;
+                int colCount = 0;
+
+                DBAdapter dbAdapter = DBAdapter.getInstance(getApplicationContext());
+                Map<String, List<String[]>> csvData = dbAdapter.retrieveAll();
+
+                File sdCardDir = Environment.getExternalStorageDirectory();
+
+                for(Map.Entry tableEntry : csvData.entrySet()){
+                    String fileName = "SivagamiBorewells-" + tableEntry.getKey().toString() + ".csv";
+                    File saveFile = new File(sdCardDir, fileName);
+                    FileWriter fw = new FileWriter(saveFile);
+                    BufferedWriter bw = new BufferedWriter(fw);
+
+                    // Table Heading
+                    bw.write(tableEntry.getKey().toString());
+                    bw.newLine();
+
+                    // Table Data
+                    List<String[]> innerCsvData = (ArrayList<String[]>)tableEntry.getValue();
+                    for(String[] row : innerCsvData){
+                        for(int index=0; index<row.length; index++){
+                            bw.write(row[index] + ",");
+                        }
+                        bw.newLine();
+                    }
+                    bw.flush();
+                }
+                Toast.makeText(DataEntryActivity.this, "Exported successfully!", Toast.LENGTH_LONG).show();
+            } catch(Exception e){
+                Log.e("EXPORT", "Export failed!");
+                e.printStackTrace();
+            }
+            return true;
         }
     }
 }
