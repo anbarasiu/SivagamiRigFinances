@@ -22,16 +22,18 @@
         android:id="@+id/dialog_id" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/dialog_category"/>
+        android:id="@+id/dialog_category"
+        android:prompt="@string/spinner_category_prompt"/>
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/dialog_subcategory"/>
+        android:id="@+id/dialog_subcategory"
+        android:prompt="@string/spinner_subcategory_prompt"/>
 
     <EditText
         android:layout_width="fill_parent"

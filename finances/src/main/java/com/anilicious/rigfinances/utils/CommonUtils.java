@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.anilicious.rigfinances.finances.R;
 
@@ -96,7 +98,17 @@ public final class CommonUtils {
                     view.requestFocus();
                     ((EditText) view).setError("Required!");
                     isValid = false;
-                    break;
+                }
+            }
+
+            if(view instanceof Spinner){
+                if(((Spinner) view).getSelectedItemPosition() == 0) { // Default item selected in Spinner
+                    view.requestFocus();
+                    View childTextView = ((Spinner) view).getSelectedView();
+                    if (childTextView instanceof TextView) {
+                        ((TextView) childTextView).setError("Required!");
+                    }
+                    isValid = false;
                 }
             }
 

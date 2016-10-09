@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="vouchers_array">
+        <item>Select a Category</item>
         <item>@string/diesel</item>
         <item>@string/maintenance</item>
         <item>@string/cook</item>
