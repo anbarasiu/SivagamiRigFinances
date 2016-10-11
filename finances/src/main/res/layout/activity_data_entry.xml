@@ -29,14 +29,37 @@
             android:layout_alignParentStart="true"
             android:hint="Set the Date"
             android:inputType="date"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"/>
 
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="700dp"
-            android:id="@+id/list_item"
-            android:layout_gravity="center" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="2dp">
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="700dp"
+                android:id="@+id/list_item"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:background="@android:color/white"/>
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="700dp"
+                android:text="PLEASE CLICK THE ADD ITEM BUTTON AND ENTER THE EXPENSE DETAILS"
+                android:padding="75dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@android:color/white"
+                android:layout_margin="2dp"/>
+        </LinearLayout>
 
         <Button
             android:layout_width="match_parent"

@@ -94,6 +94,7 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
         items = new ArrayList<Item>();
 
         ListView list_item = (ListView)findViewById(R.id.list_item);
+        list_item.setEmptyView(findViewById(R.id.empty));
         list_items_adapter = new AddItemListAdapter(this, items);
         list_item.setAdapter(list_items_adapter);
 

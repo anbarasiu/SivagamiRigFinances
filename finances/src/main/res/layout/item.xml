@@ -3,52 +3,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:id="@+id/data_entry_dialog_parent">
+    android:id="@+id/data_entry_dialog_parent"
+    android:layout_margin="2dp"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:id="@+id/id" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/category"
-        android:layout_weight="1" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/subcategory"
-        android:layout_weight="1" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/amount"
-        android:layout_weight="1"
-        android:hint="Quantity" />
+        android:layout_weight="0.05">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:id="@+id/id" />
 
-    <TextView
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/category"
+            android:layout_weight="2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/subcategory"
+            android:layout_weight="2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/amount"
+            android:layout_weight="2"
+            android:hint="Quantity"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/remarks"
+            android:layout_weight="2"
+            android:hint="Price" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/remarks"
-        android:layout_weight="1"
-        android:hint="Price" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/addItem_delete"
-        android:background="@android:drawable/ic_delete"
-        android:layout_weight="1"
-        android:gravity="center_vertical|right" />
-
+        android:layout_weight="0.95">
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="25dp"
+            android:id="@+id/addItem_delete"
+            android:background="@android:drawable/ic_delete"
+            android:gravity="center_vertical|right" />
+    </LinearLayout>
 </LinearLayout>
