@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -70,14 +71,17 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
                 String formattedDate = df.format(inserted_date_c.getTime());
                 int inserted_date = Integer.parseInt(formattedDate);
                 if(validForm()){ // TODO: Test validation
+                    String date = etDate.getText().toString();
+                    Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
+
+                    DBAdapter dbAdapter = DBAdapter.getInstance(getApplicationContext());
+                    dbAdapter.deleteItems(Item_date.toString());
+
                     ViewGroup group = (ViewGroup)findViewById(R.id.list_item);
                     for(Item item : items){
-                        String date = etDate.getText().toString();
-                        Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
                         item.setDate(Item_date);
 
                         // Insert to DB
-                        DBAdapter dbAdapter = DBAdapter.getInstance(getApplicationContext());
                         dbAdapter.insertItem(item);
                     }
 
@@ -238,28 +242,42 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
                 int colCount = 0;
 
                 DBAdapter dbAdapter = DBAdapter.getInstance(getApplicationContext());
-                Map<String, List<String[]>> csvData = dbAdapter.retrieveAll();
+                Cursor c = dbAdapter.retrieveItemDetails();
 
                 File sdCardDir = Environment.getExternalStorageDirectory();
 
-                for(Map.Entry tableEntry : csvData.entrySet()){
-                    String fileName = "SivagamiBorewells-" + tableEntry.getKey().toString() + ".csv";
-                    File saveFile = new File(sdCardDir, fileName);
-                    FileWriter fw = new FileWriter(saveFile);
-                    BufferedWriter bw = new BufferedWriter(fw);
+                String fileName = "SivagamiBorewells-Report.csv";
+                File saveFile = new File(sdCardDir, fileName);
+                FileWriter fw = new FileWriter(saveFile);
+                BufferedWriter bw = new BufferedWriter(fw);
 
+                for(int i=0; i<c.getColumnCount(); i++){
                     // Table Heading
-                    bw.write(tableEntry.getKey().toString());
+                    bw.write(c.getColumnName(i));
                     bw.newLine();
+                }
 
+                while(c.moveToNext()){
                     // Table Data
-                    List<String[]> innerCsvData = (ArrayList<String[]>)tableEntry.getValue();
-                    for(String[] row : innerCsvData){
-                        for(int index=0; index<row.length; index++){
-                            bw.write(row[index] + ",");
-                        }
-                        bw.newLine();
+                    int p = c.getPosition();
+                    String content = "";
+                    switch(c.getType(p)){
+                        case Cursor.FIELD_TYPE_FLOAT:
+                            content = Float.toString(c.getFloat(p));
+                            break;
+                        case Cursor.FIELD_TYPE_INTEGER:
+                            content = Integer.toString(c.getInt(p));
+                            break;
+                        case Cursor.FIELD_TYPE_STRING:
+                            content = c.getString(p);
+                            break;
+                        case Cursor.FIELD_TYPE_NULL:
+                            // Do we need to handle null values?
+                            break;
+                        default:
                     }
+                    bw.write(content);
+                    bw.newLine();
                     bw.flush();
                 }
                 Toast.makeText(DataEntryActivity.this, "Exported successfully!", Toast.LENGTH_LONG).show();

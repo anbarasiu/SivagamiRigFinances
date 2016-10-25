@@ -17,11 +17,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:weightSum="10"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
             android:id="@+id/date"
             android:clickable="true"
             android:onClick="setDate"
@@ -37,12 +39,13 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:layout_margin="2dp">
             <ListView
                 android:layout_width="fill_parent"
-                android:layout_height="700dp"
+                android:layout_height="fill_parent"
                 android:id="@+id/list_item"
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
@@ -50,7 +53,7 @@
             <TextView
                 android:id="@+id/empty"
                 android:layout_width="match_parent"
-                android:layout_height="700dp"
+                android:layout_height="fill_parent"
                 android:text="PLEASE CLICK THE ADD ITEM BUTTON AND ENTER THE EXPENSE DETAILS"
                 android:padding="75dp"
                 android:textColor="@android:color/darker_gray"
@@ -62,25 +65,29 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
             android:id="@+id/button_addItem"
             android:drawableLeft="@android:drawable/ic_input_add"
             android:text="Add Item"
             android:textAlignment="center"
-            android:paddingRight="10dp" />
+            android:layout_gravity="center"
+            android:paddingRight="30dp"
+            android:paddingLeft="20dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_gravity="center"
             android:gravity="center_horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/item_submit_details"
                 android:text="Submit Details"
                 android:layout_gravity="center_horizontal"
