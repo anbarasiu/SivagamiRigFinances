@@ -41,10 +41,12 @@ public class DBAdapter extends SQLiteOpenHelper{
     private static final String ITEM_DATABASE_NAME = "ITEM";
     private static final String ITEM_DATABASE_CREATE = "CREATE TABLE " + ITEM_DATABASE_NAME + "(" +
             "id " + "INTEGER primary key, " +
+            "s_no " + "INTEGER, " +
             "category" + " text, " +
             "subCategory" + " text, " +
             "remarks" + " text, " +
-            "amount" + " number);";
+            "amount" + " number, " +
+            "date" + " integer);";
 
     /* END : Tables - Create Statements */
 
@@ -92,11 +94,13 @@ public class DBAdapter extends SQLiteOpenHelper{
     public void insertItem(Item item){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("id", item.getId());
+        values.put("id", Integer.parseInt(item.getId()+""+item.getDate()));
+        values.put("s_no", item.getId());
         values.put("category", item.getCategory());
         values.put("subCategory", item.getSubCategory());
         values.put("amount", item.getAmount());
         values.put("remarks", item.getRemarks());
+        values.put("date", item.getDate());
         database.insert(ITEM_DATABASE_NAME, null, values);
         database.close();
     }
@@ -110,9 +114,19 @@ public class DBAdapter extends SQLiteOpenHelper{
     public Cursor retrieveItemDetails(){
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(ITEM_DATABASE_NAME,
+                new String[]{"s_no","category","subCategory","amount","remarks","date"},
                 null,
                 null,
-                null,
+                null, null, null);
+        return cursor;
+    }
+
+    public Cursor retrieveItemsByDate(String date){
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.query(ITEM_DATABASE_NAME,
+                new String[]{"s_no","category","subCategory","amount","remarks"},
+                "date=?",
+                new String[]{date},
                 null, null, null);
         return cursor;
     }

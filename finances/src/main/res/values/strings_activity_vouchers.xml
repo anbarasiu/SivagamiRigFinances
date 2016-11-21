@@ -1,25 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="vouchers_array">
+    <string-array name="categories">
         <item>Select a Category</item>
         <item>@string/diesel</item>
         <item>@string/maintenance</item>
-        <item>@string/cook</item>
-        <item>@string/road_expenses</item>
-        <item>@string/tools</item>
+        <item>@string/pipe</item>
+        <item>@string/hammer</item>
+        <item>@string/bit</item>
+        <item>@string/catering</item>
         <item>@string/salary</item>
-        <item>@string/pipes</item>
-        <item>@string/site_expenses</item>
+        <item>@string/tools</item>
+        <item>@string/road_expenses</item>
+        <item>@string/others</item>
+    </string-array>
+    <string-array name="subCategories_diesel">
+        <item>Select a Sub-Category</item>
+        <item>Rig</item>
+        <item>Support</item>
+        <item>Compressor</item>
+    </string-array>
+    <string-array name="subCategories_maintenance">
+        <item>Select a Sub-Category</item>
+        <item>Rig</item>
+        <item>Support</item>
+        <item>Compressor</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="subCategories_pipe">
+        <item>Select a Sub-Category</item>
+        <item>Casting Metal</item>
+        <item>Casting PVC</item>
+        <item>Rod</item>
+    </string-array>
+    <string-array name="subCategories_hammer">
+        <item>Select a Sub-Category</item>
+        <item>Hammer</item>
+    </string-array>
+    <string-array name="subCategories_bit">
+        <item>Select a Sub-Category</item>
+        <item>Bit</item>
+    </string-array>
+    <string-array name="subCategories_catering">
+        <item>Select a Sub-Category</item>
+        <item>Rice</item>
+        <item>Vegetables</item>
+        <item>Egg</item>
+        <item>Meat</item>
+        <item>Grocery</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="subCategories_salary">
+        <item>Select a Sub-Category</item>
+        <item>Salary</item>
+    </string-array>
+    <string-array name="subCategories_tools">
+        <item>Select a Sub-Category</item>
+        <item>Hand Tools</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="subCategories_road">
+        <item>Select a Sub-Category</item>
+        <item>RTO</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="subCategories_others">
+        <item>Select a Sub-Category</item>
+        <item>Others</item>
     </string-array>
 
     <string name="diesel">Diesel</string>
     <string name="maintenance">Maintenance</string>
-    <string name="cook">Cook</string>
-    <string name="road_expenses">Road Expenses</string>
-    <string name="tools">Tools</string>
+    <string name="pipe">Pipe</string>
+    <string name="hammer">Hammer</string>
+    <string name="bit">Bit</string>
+    <string name="catering">Catering</string>
     <string name="salary">Salary</string>
-    <string name="pipes">Pipes</string>
-    <string name="site_expenses">Site Expenses</string>
+    <string name="tools">Tools</string>
+    <string name="road_expenses">Road Expenses</string>
+    <string name="others">Others</string>
 
     <!-- Fragment : Diesel -->
     <string name="fragment_diesel_question1">Diesel For</string>

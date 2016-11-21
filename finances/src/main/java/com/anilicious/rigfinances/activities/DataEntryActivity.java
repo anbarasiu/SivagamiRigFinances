@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class DataEntryActivity extends Activity implements IDataEntryActivity{
+public class DataEntryActivity extends Activity implements IDataEntryActivity, AdapterView.OnItemSelectedListener {
 
     private List<Item> items;
     private AddItemListAdapter list_items_adapter;
@@ -48,10 +49,13 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
     Spinner spSubCategory;
     EditText etDate;
 
+    DBAdapter dbAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_entry);
+        dbAdapter = DBAdapter.getInstance(getApplicationContext());
 
         // UI Object References
         Button btnSubmit = (Button)findViewById(R.id.item_submit_details);
@@ -74,7 +78,6 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
                     String date = etDate.getText().toString();
                     Integer Item_date = Integer.parseInt(CommonUtils.formatDateEntry(date));
 
-                    DBAdapter dbAdapter = DBAdapter.getInstance(getApplicationContext());
                     dbAdapter.deleteItems(Item_date.toString());
 
                     ViewGroup group = (ViewGroup)findViewById(R.id.list_item);
@@ -150,12 +153,12 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
 
     public void setupSpinners(Dialog view){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(DataEntryActivity.this,
-                R.array.vouchers_array, android.R.layout.simple_spinner_item);
+                R.array.categories, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spCategory.setAdapter(adapter);
-        spSubCategory.setAdapter(adapter);
+        spCategory.setOnItemSelectedListener(this);
     }
 
     // Begin - DatePicker Methods
@@ -182,6 +185,21 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
 
     // End - DatePicker Methods
 
+    private void retrieveDetails(String date){
+        Cursor c = dbAdapter.retrieveItemsByDate(date);
+        while(c.moveToNext()){
+            Item i = new Item();
+            i.setId(c.getInt(0));
+            i.setCategory(c.getString(1));
+            i.setSubCategory(c.getString(2));
+            i.setAmount(c.getFloat(3));
+            i.setRemarks(c.getString(4));
+
+            items.add(i);
+            list_items_adapter.notifyDataSetChanged();
+        }
+    }
+
     /*
      *  Reset form once Submitted button is clicked
      */
@@ -199,6 +217,10 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
     public void onDialogDataSet(String string) {
         if(string != null) {
             etDate.setText(string);
+            items.clear();
+            list_items_adapter.notifyDataSetChanged();
+
+            retrieveDetails(CommonUtils.formatDateEntry(string));
         }
     }
 
@@ -219,6 +241,55 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
             exportDatabaseCSVTask.execute();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int arr;
+        switch(position){
+            case 1:
+                arr = R.array.subCategories_diesel;
+                break;
+            case 2:
+                arr = R.array.subCategories_maintenance;
+                break;
+            case 3:
+                arr = R.array.subCategories_pipe;
+                break;
+            case 4:
+                arr = R.array.subCategories_hammer;
+                break;
+            case 5:
+                arr = R.array.subCategories_bit;
+                break;
+            case 6:
+                arr = R.array.subCategories_catering;
+                break;
+            case 7:
+                arr = R.array.subCategories_salary;
+                break;
+            case 8:
+                arr = R.array.subCategories_tools;
+                break;
+            case 9:
+                arr = R.array.subCategories_road;
+                break;
+            default:
+                arr = R.array.subCategories_others;
+                break;
+        }
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(DataEntryActivity.this,
+                arr, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spSubCategory.setAdapter(adapter);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     // Action bar menu items - End
@@ -259,33 +330,28 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity{
 
                 while(c.moveToNext()){
                     // Table Data
-                    int p = c.getPosition();
                     String content = "";
-                    switch(c.getType(p)){
-                        case Cursor.FIELD_TYPE_FLOAT:
-                            content = Float.toString(c.getFloat(p));
-                            break;
-                        case Cursor.FIELD_TYPE_INTEGER:
-                            content = Integer.toString(c.getInt(p));
-                            break;
-                        case Cursor.FIELD_TYPE_STRING:
-                            content = c.getString(p);
-                            break;
-                        case Cursor.FIELD_TYPE_NULL:
-                            // Do we need to handle null values?
-                            break;
-                        default:
-                    }
+                    content += Integer.toString(c.getInt(0)) + ',';
+                    content += c.getString(1) + ',';
+                    content += c.getString(2) + ',';
+                    content += c.getString(3) + ',';
+                    content += Float.toString(c.getFloat(4)) + ',';
+                    content += Integer.toString(c.getInt(5));
                     bw.write(content);
                     bw.newLine();
                     bw.flush();
                 }
-                Toast.makeText(DataEntryActivity.this, "Exported successfully!", Toast.LENGTH_LONG).show();
             } catch(Exception e){
                 Log.e("EXPORT", "Export failed!");
                 e.printStackTrace();
             }
             return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            Toast.makeText(DataEntryActivity.this, "Exported successfully!", Toast.LENGTH_LONG).show();
         }
     }
 }
