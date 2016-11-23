@@ -324,9 +324,9 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity, A
 
                 for(int i=0; i<c.getColumnCount(); i++){
                     // Table Heading
-                    bw.write(c.getColumnName(i));
-                    bw.newLine();
+                    bw.write(c.getColumnName(i) + ',');
                 }
+                bw.newLine();
 
                 while(c.moveToNext()){
                     // Table Data
@@ -334,9 +334,9 @@ public class DataEntryActivity extends Activity implements IDataEntryActivity, A
                     content += Integer.toString(c.getInt(0)) + ',';
                     content += c.getString(1) + ',';
                     content += c.getString(2) + ',';
-                    content += c.getString(3) + ',';
-                    content += Float.toString(c.getFloat(4)) + ',';
-                    content += Integer.toString(c.getInt(5));
+                    content += Float.toString(c.getFloat(3)) + ',';
+                    content += c.getString(4) + ',';
+                    content += CommonUtils.reverseFormatDateEntry(Integer.toString(c.getInt(5)));
                     bw.write(content);
                     bw.newLine();
                     bw.flush();
